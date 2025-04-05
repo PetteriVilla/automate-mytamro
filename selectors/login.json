@@ -1,0 +1,70 @@
+{
+  "buttons": [
+    {
+      "selector": "span#submitButton[role=\"button\"]",
+      "text": "Sign in",
+      "description": "Button: Sign in"
+    }
+  ],
+  "links": [
+    {
+      "selector": "a",
+      "text": "Forgot password?",
+      "href": "https://apps.tamro.fi/PasswordReset?returnUrl=mytamro.tamro.fi&ssl=1",
+      "description": "Link: Forgot password?"
+    },
+    {
+      "selector": "a",
+      "text": "asiakaspalvelu@tamro.com",
+      "href": "mailto:asiakaspalvelu@tamro.com?subject=Service%20request%20MyTamro",
+      "description": "Link: asiakaspalvelu@tamro.com"
+    },
+    {
+      "selector": "a", 
+      "text": "Login instructions",
+      "href": "https://www.tamro.fi/en/services/pharmacies-and-hospitals/mytamro/logininstructions",
+      "description": "Link: Login instructions"
+    },
+    {
+      "selector": "a",
+      "text": "Terms of service",
+      "href": "https://mytamro.tamro.fi/termsofservice?lang=en",
+      "description": "Link: Terms of service"
+    },
+    {
+      "selector": "a",
+      "text": "Privacy statements",
+      "href": "https://www.tamro.fi/en/privacy-statements",
+      "description": "Link: Privacy statements"
+    },
+    {
+      "selector": "a",
+      "text": "Security desc",
+      "href": "https://www.tamro.fi/en/data-security",
+      "description": "Link: Security desc"
+    }
+  ],
+  "inputs": [
+    {
+      "selector": "input#userNameInput[name=\"UserName\"]",
+      "type": "email",
+      "name": "UserName",
+      "placeholder": "Username",
+      "description": "Input: Username"
+    },
+    {
+      "selector": "input#passwordInput[name=\"Password\"]",
+      "type": "password",
+      "name": "Password",
+      "placeholder": "Password",
+      "description": "Input: Password"
+    },
+    {
+      "selector": "input#kmsiInput[name=\"Kmsi\"]",
+      "type": "checkbox",
+      "name": "Kmsi",
+      "placeholder": "",
+      "description": "Input: Keep me signed in checkbox"
+    }
+  ]
+}

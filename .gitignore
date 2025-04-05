@@ -1,0 +1,40 @@
+# Python virtual environment
+.venv/
+venv/
+ENV/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Robot Framework outputs
+log.html
+output.xml
+report.html
+selenium-screenshot-*.png
+playwright-log.txt
+browser/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Test results and debug files
+results/
+debug.log
+geckodriver.log
+chromedriver.log 
