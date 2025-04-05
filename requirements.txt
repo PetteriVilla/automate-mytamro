@@ -1,6 +1,4 @@
-selenium>=4.17.2
 python-dotenv>=1.0.1
 requests>=2.31.0
 robotframework>=7.0
-robotframework-seleniumlibrary>=6.2.0
 robotframework-browser>=18.0.0
