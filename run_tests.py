@@ -7,37 +7,50 @@ import time
 from pathlib import Path
 import venv
 
+
 # ANSI colors for terminal output
 class Colors:
-    GREEN = '\033[92m'
-    BLUE = '\033[94m'
-    RED = '\033[91m'
-    ENDC = '\033[0m'
+    GREEN = "\033[92m"
+    BLUE = "\033[94m"
+    RED = "\033[91m"
+    ENDC = "\033[0m"
+
 
 def clear_screen():
     """Clear the terminal screen."""
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system("cls" if os.name == "nt" else "clear")
+
 
 def show_menu():
     """Display the main menu."""
     clear_screen()
-    print(f"{Colors.BLUE}================ MyTamro Test Runner ================={Colors.ENDC}")
-    print("1: Run 'Valid Login' test")
-    print("2: Run all tests")
+    print(
+        f"{Colors.BLUE}================ MyTamro Test Runner ================={Colors.ENDC}"
+    )
+    print("1: MyTamro: Run login test")
+    print("2: MyTamro: Run all tests")
+    print("3: Oikotie: Run apartment search test")
+    print("4: Oikotie: Run cookie acceptance test")
+    print("5: Run all tests")
     print("Q: Quit")
-    print(f"{Colors.BLUE}=================================================={Colors.ENDC}")
+    print(
+        f"{Colors.BLUE}=================================================={Colors.ENDC}"
+    )
+
 
 def get_venv_python():
     """Get the path to the virtual environment Python executable."""
-    if os.name == 'nt':  # Windows
+    if os.name == "nt":  # Windows
         return str(Path(".venv") / "Scripts" / "python.exe")
     return str(Path(".venv") / "bin" / "python")
 
+
 def get_venv_pip():
     """Get the path to the virtual environment pip executable."""
-    if os.name == 'nt':  # Windows
+    if os.name == "nt":  # Windows
         return str(Path(".venv") / "Scripts" / "pip.exe")
     return str(Path(".venv") / "bin" / "pip")
+
 
 def install_requirements():
     """Install requirements using pip."""
@@ -50,10 +63,11 @@ def install_requirements():
         print(f"{Colors.RED}Error installing requirements: {e}{Colors.ENDC}")
         sys.exit(1)
 
+
 def activate_venv():
     """Create and activate virtual environment if it doesn't exist."""
     venv_path = Path(".venv")
-    
+
     if not venv_path.exists():
         print("Virtual environment not found. Creating one...")
         venv.create(".venv", with_pip=True)
@@ -62,13 +76,18 @@ def activate_venv():
         # Verify robot framework is installed
         try:
             python_path = get_venv_python()
-            result = subprocess.run([python_path, "-c", "import robot"], capture_output=True, text=True)
+            result = subprocess.run(
+                [python_path, "-c", "import robot"], capture_output=True, text=True
+            )
             if result.returncode != 0:
-                print("Robot Framework not found in existing virtual environment. Installing requirements...")
+                print(
+                    "Robot Framework not found in existing virtual environment. Installing requirements..."
+                )
                 install_requirements()
         except subprocess.CalledProcessError:
             print("Checking virtual environment failed. Reinstalling requirements...")
             install_requirements()
+
 
 def check_env_file():
     """Check if .env file exists, create from template if it doesn't."""
@@ -77,32 +96,70 @@ def check_env_file():
         if os.path.exists(".env.example"):
             with open(".env.example", "r") as example, open(".env", "w") as env:
                 env.write(example.read())
-            print(f"{Colors.RED}Please edit the '.env' file with your credentials before running tests.{Colors.ENDC}")
+            print(
+                f"{Colors.RED}Please edit the '.env' file with your credentials before running tests.{Colors.ENDC}"
+            )
             sys.exit(1)
         else:
-            print(f"{Colors.RED}'.env.example' file not found. Cannot create '.env' file.{Colors.ENDC}")
+            print(
+                f"{Colors.RED}'.env.example' file not found. Cannot create '.env' file.{Colors.ENDC}"
+            )
             sys.exit(1)
 
-def run_robot_test(test_name=None):
+
+def check_cursorignore():
+    """Check if .cursorignore file exists, create it if it doesn't."""
+    cursorignore_path = Path(".cursorignore")
+    if not cursorignore_path.exists():
+        print("'.cursorignore' file not found. Creating one...")
+        with open(cursorignore_path, "w") as cursorignore_file:
+            cursorignore_file.write(".env*\n")  # Add .env* files to .cursorignore
+        print(f"{Colors.GREEN}'.cursorignore' file created successfully!{Colors.ENDC}")
+
+
+def run_robot_test(test_name=None, test_file="tests/login_test.robot"):
     """Run Robot Framework test."""
     try:
         python_path = get_venv_python()
-        robot_path = str(Path(".venv") / "bin" / "robot") if os.name != "nt" else str(Path(".venv") / "Scripts" / "robot.exe")
-        
+        robot_path = (
+            str(Path(".venv") / "bin" / "robot")
+            if os.name != "nt"
+            else str(Path(".venv") / "Scripts" / "robot.exe")
+        )
+
         if not os.path.exists(robot_path):
-            print(f"{Colors.RED}Robot executable not found. Reinstalling requirements...{Colors.ENDC}")
+            print(
+                f"{Colors.RED}Robot executable not found. Reinstalling requirements...{Colors.ENDC}"
+            )
             install_requirements()
-        
+
+        # Add default options for slower execution and waiting
+        robot_options = [
+            "--settag",
+            "slow",
+            "--variable",
+            "SELENIUM_SPEED:0.5 seconds",
+            "--variable",
+            "SELENIUM_TIMEOUT:30 seconds",
+            "--variable",
+            "SELENIUM_IMPLICIT_WAIT:10 seconds",
+        ]
+
         if test_name:
-            subprocess.run([robot_path, "-t", test_name, "tests/login_test.robot"], check=True)
+            subprocess.run(
+                [robot_path] + robot_options + ["-t", test_name, test_file], check=True
+            )
         else:
-            subprocess.run([robot_path, "tests/login_test.robot"], check=True)
+            subprocess.run([robot_path] + robot_options + [test_file], check=True)
     except subprocess.CalledProcessError as e:
         print(f"{Colors.RED}Error running test: {e}{Colors.ENDC}")
     except FileNotFoundError:
-        print(f"{Colors.RED}Robot Framework not found. Please ensure virtual environment is properly set up.{Colors.ENDC}")
-    
+        print(
+            f"{Colors.RED}Robot Framework not found. Please ensure virtual environment is properly set up.{Colors.ENDC}"
+        )
+
     input("\nPress Enter to continue...")
+
 
 def main():
     """Main function to run the test menu."""
@@ -110,8 +167,9 @@ def main():
         # Ensure we're in the correct directory
         script_dir = os.path.dirname(os.path.abspath(__file__))
         os.chdir(script_dir)
-        
+
         # Setup environment
+        check_cursorignore()  # Check for .cursorignore
         activate_venv()
         check_env_file()
 
@@ -119,13 +177,32 @@ def main():
             show_menu()
             choice = input("Please make a selection: ").strip().lower()
 
-            if choice == '1':
-                print(f"{Colors.GREEN}Running 'Valid Login' test...{Colors.ENDC}")
-                run_robot_test("Valid Login")
-            elif choice == '2':
+            if choice == "1":
+                print(f"{Colors.GREEN}Running MyTamro login test...{Colors.ENDC}")
+                run_robot_test("Valid Login", "tests/login_test.robot")
+            elif choice == "2":
+                print(f"{Colors.GREEN}Running all MyTamro tests...{Colors.ENDC}")
+                run_robot_test(test_file="tests/login_test.robot")
+            elif choice == "3":
+                print(
+                    f"{Colors.GREEN}Open Oikotie myytävät asunnot test...{Colors.ENDC}"
+                )
+                run_robot_test(
+                    "Search For Apartments In Helsinki",
+                    "tests/oikotie_tests.robot",
+                )
+            elif choice == "4":
+                print(
+                    f"{Colors.GREEN}Running Oikotie cookie acceptance test...{Colors.ENDC}"
+                )
+                run_robot_test(
+                    "Navigate To Oikotie Web Page And Accept Cookies",
+                    "tests/oikotie_tests.robot",
+                )
+            elif choice == "5":
                 print(f"{Colors.GREEN}Running all tests...{Colors.ENDC}")
-                run_robot_test()
-            elif choice == 'q':
+                run_robot_test(test_file="tests/*.robot")
+            elif choice == "q":
                 print("Exiting...")
                 break
             else:
@@ -138,6 +215,7 @@ def main():
     except Exception as e:
         print(f"{Colors.RED}An error occurred: {e}{Colors.ENDC}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

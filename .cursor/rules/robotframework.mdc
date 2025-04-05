@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+-read instrucions for robot frameworkd from https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html

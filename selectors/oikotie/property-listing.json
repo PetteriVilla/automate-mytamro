@@ -1,0 +1,85 @@
+{
+  "header": {
+    "logo": ".oikotie-logo",
+    "loginButton": "a[href*='kirjaudu']",
+    "menuButton": "button.menu-toggle"
+  },
+  "propertyTypeNavigation": {
+    "container": ".property-type-navigation",
+    "types": {
+      "apartments": {
+        "icon": "img[alt='Asunnot']",
+        "link": "a[href*='/asunnot']",
+        "text": "Asunnot"
+      },
+      "newBuilds": {
+        "icon": "img[alt='Uudisasunnot']",
+        "link": "a[href*='/uudisasunnot']",
+        "text": "Uudisasunnot"
+      },
+      "holidayHomes": {
+        "icon": "img[alt='Loma-asunnot']",
+        "link": "a[href*='/loma-asunnot']",
+        "text": "Loma-asunnot"
+      },
+      "garages": {
+        "icon": "img[alt='Autotallit']",
+        "link": "a[href*='/autotallit']",
+        "text": "Autotallit"
+      },
+      "plots": {
+        "icon": "img[alt='Tontit']",
+        "link": "a[href*='/tontit']",
+        "text": "Tontit"
+      },
+      "landAndForest": {
+        "icon": "img[alt='Maa- ja metsätilat']",
+        "link": "a[href*='/maa-ja-metsatilat']",
+        "text": "Maa- ja metsätilat"
+      }
+    }
+  },
+  "mainContent": {
+    "title": "h1",
+    "description": ".description-text",
+    "searchSection": {
+      "container": ".search-section",
+      "locationInput": "input[placeholder*='Sijainti']",
+      "propertyTypeSelect": "select[name='propertyType']",
+      "priceRange": {
+        "min": "input[name='minPrice']",
+        "max": "input[name='maxPrice']"
+      },
+      "sizeRange": {
+        "min": "input[name='minSize']",
+        "max": "input[name='maxSize']"
+      },
+      "searchButton": "button[type='submit']",
+      "advancedSearch": "button.advanced-search"
+    }
+  },
+  "propertyListings": {
+    "container": ".property-listings",
+    "propertyCard": {
+      "wrapper": ".property-card",
+      "image": ".property-image img",
+      "price": ".property-price",
+      "title": ".property-title",
+      "details": ".property-details",
+      "location": ".property-location",
+      "link": "a.property-link"
+    }
+  },
+  "pagination": {
+    "container": ".pagination",
+    "previousButton": "button.previous-page",
+    "nextButton": "button.next-page",
+    "pageNumbers": ".page-numbers"
+  },
+  "filters": {
+    "container": ".filters-section",
+    "previousSearches": "button.previous-searches",
+    "saveSearch": "button.save-search",
+    "sortDropdown": "select.sort-options"
+  }
+}

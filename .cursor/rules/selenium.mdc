@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+-read instructions for selenium library from https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html
